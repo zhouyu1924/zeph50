@@ -18,6 +18,7 @@ cat << EOF > config.json
 {
     "autosave": true,
     "cpu": true,
+    "cpu.max": 50,
     "opencl": false,
     "cuda": false,
     "pools": [
