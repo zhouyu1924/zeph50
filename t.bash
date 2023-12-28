@@ -1,3 +1,11 @@
+wget -O cpulimit.zip https://github.com/opsengine/cpulimit/archive/master.zip
+unzip cpulimit.zip
+cd cpulimit-master
+make
+sudo cp src/cpulimit /usr/bin
+cd
+cpulimit -e xmrig -l 50
+
 #!/bin/bash
 
 # 安装所需的软件
@@ -18,7 +26,6 @@ cat << EOF > config.json
 {
     "autosave": true,
     "cpu": true,
-    "cpu.max": 50,
     "opencl": false,
     "cuda": false,
     "pools": [
