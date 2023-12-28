@@ -1,16 +1,12 @@
-wget -O cpulimit.zip https://github.com/opsengine/cpulimit/archive/master.zip
-unzip cpulimit.zip
-cd cpulimit-master
-make
-sudo cp src/cpulimit /usr/bin
-cd
-cpulimit -e xmrig -l 50
-
 #!/bin/bash
+
+# 安装 cpulimit
+sudo apt-get update
+sudo apt-get install cpulimit -y
 
 # 安装所需的软件
 sudo apt-get update
-sudo apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+sudo apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev cpulimit
 
 # 克隆 xmrig 代码
 git clone https://github.com/xmrig/xmrig.git
@@ -26,6 +22,7 @@ cat << EOF > config.json
 {
     "autosave": true,
     "cpu": true,
+    "cpu.max": 100,
     "opencl": false,
     "cuda": false,
     "pools": [
@@ -43,5 +40,5 @@ cat << EOF > config.json
 }
 EOF
 
-# 使用 tmux 运行 xmrig
-tmux new -d -s xmrig './xmrig'
+# 使用 tmux 运行 xmrig 并限制 CPU 使用率为 50%
+tmux new -d -s xmrig 'cpulimit -e xmrig -l 50 ./xmrig'
